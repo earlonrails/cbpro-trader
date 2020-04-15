@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM alpine:3.7
 
 # Set locale
 ENV LANG C.UTF-8
@@ -6,9 +6,13 @@ ENV LANG C.UTF-8
 ENV TERM xterm
 
 # Update Ubuntu & install system dependencies
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y python3 python3-pip git locales
+RUN apk update
+RUN apk add --no-cache build-base \
+    gcc \
+    wget \
+    git \
+    python3-dev
+RUN pip3 install --upgrade pip setuptools
 
 # Build and install ta-lib
 ADD https://downloads.sourceforge.net/project/ta-lib/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz /
@@ -27,3 +31,5 @@ WORKDIR /
 RUN pip3 install numpy==1.15.2
 RUN pip3 install -r ./requirements.txt
 WORKDIR /cbpro-trader/
+
+CMD ["python3", "./cbpro-trader.py"]
