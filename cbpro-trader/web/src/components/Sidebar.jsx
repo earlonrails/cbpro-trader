@@ -4,14 +4,16 @@ import FlagsContainer from '../containers/FlagsContainer'
 
 function Sidebar(props) {
     const { active_period, period_list, active_section, changeActiveSection, changeActivePeriod } = props;
+    const periods = period_list.map(period_name => {
+    const onClickChangePeriod = () => {changeActivePeriod(period_name)}
+        return(
+            <li className={active_period === period_name ? "focused" : ""} onClick={onClickChangePeriod} key={period_name}>{period_name}</li>
+        )
+    })
     return (
         <div id="sidebar">
             <ul id="currency-list">
-                {period_list.map(period_name => {
-                    return(
-                        <li className={active_period === period_name ? "focused" : ""} onClick={() => {changeActivePeriod(period_name)}}>{period_name}</li>
-                    )
-                })}
+                {periods}
             </ul>
             <div id="secondary-section">
                 <div id="secondary-selector">

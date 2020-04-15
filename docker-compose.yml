@@ -1,12 +1,17 @@
-version: "3"
+version: '3.4'
 services:
-  cbpro:
-    build: ./cbpro-trader/daemon
-    command: python3 ./cbpro-trader.py
-    volumes:
-      - ./cbpro-trader/daemon/:/cbpro-trader/:Z
   web:
     build: ./cbpro-trader/web
-    command: bash -c "npm install && npm start"
     volumes:
-      - ./cbpro-trader/web/:/frontend/:Z
+      - ./cbpro-trader/web/:/app
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+
+  cbpro:
+    build: ./cbpro-trader/daemon
+    volumes:
+      - ./cbpro-trader/daemon/:/cbpro-trader/:Z
+    environment:
+      - FLASK_RUN_PORT=5000
+      - CBPRO_CONFIG=config.yml

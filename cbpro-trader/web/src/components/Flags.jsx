@@ -2,19 +2,18 @@ import React from 'react';
 
 function Flags(props) {
     const { flags } = props;
+    const products = Object.keys(flags).map((flag) => {
+        return(
+            <div className="product" key={flags[flag]}>
+                <div className="product_name">{flag.toUpperCase()}</div>
+                <div className="flag">{flags[flag]}</div>
+            </div>
+        )
+    })
+
     return(
         <div id="flags">
-            {
-                Object.keys(flags).map((flag) => {
-                    return(
-                        
-                        <div class="product">
-                            <div class="product_name">{flag.toUpperCase()}</div>
-                            <div class="flag">{flags[flag]}</div>
-                        </div>
-                    )
-                })
-            }
+            {products}
         </div>
     )
 }
