@@ -6,7 +6,7 @@ class web(object):
         self.trade_engine = trade_engine
         app = Flask(__name__)
         self.app = app
-    
+
         @app.route('/periods/')
         @app.route('/periods/<periodName>')
         def periods(periodName=None):
@@ -39,4 +39,4 @@ class web(object):
             return jsonify(flags)
 
     def start(self):
-        self.app.run(host='0.0.0.0')
+        self.app.run(host='0.0.0.0', port=5000)

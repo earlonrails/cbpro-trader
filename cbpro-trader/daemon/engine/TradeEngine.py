@@ -5,12 +5,13 @@ import datetime
 from decimal import Decimal, ROUND_DOWN
 from .Product import Product
 
-class TradeEngine():
+class TradeEngine(object):
     def __init__(self, auth_client, product_list=['BTC-USD', 'ETH-USD', 'LTC-USD'], fiat='USD', is_live=False, max_slippage=Decimal('0.10')):
         self.logger = logging.getLogger('trader-logger')
         self.error_logger = logging.getLogger('error-logger')
         self.auth_client = auth_client
         self.product_list = product_list
+        self.fiat = 0
         self.fiat_currency = fiat
         self.is_live = is_live
         self.products = []
@@ -291,16 +292,16 @@ class TradeEngine():
 
             new_buy_flag = True
             new_sell_flag = False
-            for cur_period in period_list:
-                if Decimal(indicators[cur_period.name]['adx']) > Decimal(25.0):
+            for curr_period in period_list:
+                if Decimal(indicators[curr_period.name]['adx']) > Decimal(25.0):
                     # Trending strategy
-                    new_buy_flag = new_buy_flag and Decimal(indicators[cur_period.name]['obv']) > Decimal(indicators[cur_period.name]['obv_ema'])
-                    new_sell_flag = new_sell_flag or Decimal(indicators[cur_period.name]['obv']) < Decimal(indicators[cur_period.name]['obv_ema'])
+                    new_buy_flag = new_buy_flag and Decimal(indicators[curr_period.name]['obv']) > Decimal(indicators[curr_period.name]['obv_ema'])
+                    new_sell_flag = new_sell_flag or Decimal(indicators[curr_period.name]['obv']) < Decimal(indicators[curr_period.name]['obv_ema'])
                 else:
                     # Ranging strategy
-                    new_buy_flag = new_buy_flag and Decimal(indicators[cur_period.name]['stoch_slowk']) > Decimal(indicators[cur_period.name]['stoch_slowd']) and \
-                                                    Decimal(indicators[cur_period.name]['stoch_slowk']) < Decimal('50.0')
-                    new_sell_flag = new_sell_flag or Decimal(indicators[cur_period.name]['stoch_slowk']) < Decimal(indicators[cur_period.name]['stoch_slowd'])
+                    new_buy_flag = new_buy_flag and Decimal(indicators[curr_period.name]['stoch_slowk']) > Decimal(indicators[curr_period.name]['stoch_slowd']) and \
+                                                    Decimal(indicators[curr_period.name]['stoch_slowk']) < Decimal('50.0')
+                    new_sell_flag = new_sell_flag or Decimal(indicators[curr_period.name]['stoch_slowk']) < Decimal(indicators[curr_period.name]['stoch_slowd'])
 
             if product_id == 'LTC-BTC' or product_id == 'ETH-BTC':
                 ltc_or_eth_fiat_product = self.get_product_by_product_id(product_id[:3] + '-' + self.fiat_currency)

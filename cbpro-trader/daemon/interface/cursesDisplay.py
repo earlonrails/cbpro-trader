@@ -33,11 +33,11 @@ class cursesDisplay:
         starty = self.starty
         if starty < self.signal_end_y + 1:
             starty = self.signal_end_y + 1
-        for cur_period in period_list:
-            cur_stick = cur_period.cur_candlestick
+        for curr_period in period_list:
+            cur_stick = curr_period.cur_candlestick
             if cur_stick.new is False:
                 self.pad.addstr(starty, 0, "%s - %s O: %f H: %f L: %f C: %f V: %f" %
-                                (cur_period.name, cur_stick.time, cur_stick.open,
+                                (curr_period.name, cur_stick.time, cur_stick.open,
                                  cur_stick.high, cur_stick.low, cur_stick.close,
                                  cur_stick.volume),
                                 self.print_color(cur_stick.close, cur_stick.open))
@@ -49,11 +49,11 @@ class cursesDisplay:
 
     def update_indicators(self, period_list, indicators):
         starty = self.starty
-        for cur_period in period_list:
-            stoch_diff = Decimal(indicators[cur_period.name]['stoch_slowk']) - Decimal(indicators[cur_period.name]['stoch_slowd'])
-            obv_diff = Decimal(indicators[cur_period.name]['obv']) - Decimal(indicators[cur_period.name]['obv_ema'])
+        for curr_period in period_list:
+            stoch_diff = Decimal(indicators[curr_period.name]['stoch_slowk']) - Decimal(indicators[curr_period.name]['stoch_slowd'])
+            obv_diff = Decimal(indicators[curr_period.name]['obv']) - Decimal(indicators[curr_period.name]['obv_ema'])
             self.pad.addstr(starty, 0, "%s - OBV_DIFF: %f STOCH_DIFF: %f ADX: %f" %
-                            (cur_period.name, obv_diff, stoch_diff, indicators[cur_period.name]['adx']),
+                            (curr_period.name, obv_diff, stoch_diff, indicators[curr_period.name]['adx']),
                             self.print_color(Decimal(obv_diff), Decimal('0.0')))
             starty += 1
         self.starty = starty + 1

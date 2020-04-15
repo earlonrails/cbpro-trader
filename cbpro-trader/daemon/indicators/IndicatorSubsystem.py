@@ -12,23 +12,23 @@ class IndicatorSubsystem:
         for period in self.period_list:
             self.current_indicators[period.name] = {}
 
-    def recalculate_indicators(self, cur_period):
-        total_periods = len(cur_period.candlesticks)
+    def recalculate_indicators(self, curr_period):
+        total_periods = len(curr_period.candlesticks)
         if total_periods > 0:
-            closing_prices = cur_period.get_closing_prices()
-            closing_prices_close = np.append(closing_prices, cur_period.cur_candlestick.close)
-            self.highs = np.append(cur_period.get_highs(), cur_period.cur_candlestick.high)
-            self.lows = np.append(cur_period.get_lows(), cur_period.cur_candlestick.low)
-            volumes = np.append(cur_period.get_volumes(), cur_period.cur_candlestick.volume)
+            closing_prices = curr_period.get_closing_prices()
+            closing_prices_close = np.append(closing_prices, curr_period.cur_candlestick.close)
+            self.highs = np.append(curr_period.get_highs(), curr_period.cur_candlestick.high)
+            self.lows = np.append(curr_period.get_lows(), curr_period.cur_candlestick.low)
+            volumes = np.append(curr_period.get_volumes(), curr_period.cur_candlestick.volume)
 
-            # self.calculate_bbands(cur_period.name, closing_prices_close)
-            # self.calculate_macd(cur_period.name, closing_prices_close)
-            self.calculate_obv(cur_period.name, closing_prices_close, volumes)
-            self.calculate_adx(cur_period.name, closing_prices_close)
-            self.calculate_stoch(cur_period.name, closing_prices_close)
+            # self.calculate_bbands(curr_period.name, closing_prices_close)
+            # self.calculate_macd(curr_period.name, closing_prices_close)
+            self.calculate_obv(curr_period.name, closing_prices_close, volumes)
+            self.calculate_adx(curr_period.name, closing_prices_close)
+            self.calculate_stoch(curr_period.name, closing_prices_close)
 
-            self.current_indicators[cur_period.name]['close'] = cur_period.cur_candlestick.close
-            self.current_indicators[cur_period.name]['total_periods'] = total_periods
+            self.current_indicators[curr_period.name]['close'] = curr_period.cur_candlestick.close
+            self.current_indicators[curr_period.name]['total_periods'] = total_periods
 
     def calculate_adx(self, period_name, close):
         adx = talib.ADX(self.highs, self.lows, close, timeperiod=14)
