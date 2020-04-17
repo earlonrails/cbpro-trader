@@ -1,11 +1,18 @@
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, render_template
 
 class web(object):
     def __init__(self, indicator_subsys, trade_engine):
         self.indicator_subsys = indicator_subsys
         self.trade_engine = trade_engine
-        app = Flask(__name__)
+        app = Flask(__name__, static_folder='../templates/static',
+                  template_folder='../templates')
         self.app = app
+
+        # Serve React App
+        @app.route("/")
+        def index():
+            return render_template("index.html")
 
         @app.route('/periods/')
         @app.route('/periods/<periodName>')
@@ -39,4 +46,4 @@ class web(object):
             return jsonify(flags)
 
     def start(self):
-        self.app.run(host='0.0.0.0', port=5000)
+        self.app.run(host='0.0.0.0', port=os.getenv("FLASK_PORT", "5000"))

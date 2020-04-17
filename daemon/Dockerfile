@@ -17,19 +17,15 @@ RUN pip3 install --upgrade pip setuptools
 # Build and install ta-lib
 ADD https://downloads.sourceforge.net/project/ta-lib/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz /
 RUN tar xzvf ta-lib-0.4.0-src.tar.gz
-WORKDIR /ta-lib/
+WORKDIR /ta-lib
 RUN ./configure --prefix=/usr
 RUN make
 RUN make install
 
 # Copy bot files
-RUN mkdir -p /cbpro-trader
-COPY ./requirements.txt /
-
-# Install Python dependencies
-WORKDIR /
+WORKDIR /app
+COPY requirements.txt .
 RUN pip3 install numpy==1.15.2
 RUN pip3 install -r ./requirements.txt
-WORKDIR /cbpro-trader/
 
 CMD ["python3", "./cbpro-trader.py"]

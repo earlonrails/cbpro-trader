@@ -1,0 +1,11 @@
+[Unit]
+Description=Coinbase Pro Algo Trader
+After=multi-user.target
+
+[Service]
+Environment=CBPRO_CONFIG=/home/pi/cbpro-trader/cbpro-trader/daemon/config.yml
+Type=idle
+ExecStart=/usr/bin/python3 /home/pi/cbpro-trader/cbpro-trader/daemon/cbpro-trader.py
+
+[Install]
+WantedBy=multi-user.target
