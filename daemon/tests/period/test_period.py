@@ -40,6 +40,6 @@ class TestPeriod(object):
 
         assert isinstance(test_period.candlesticks, type(np.array([])))
         assert len(test_period.candlesticks) == len(self.fake_hist_data) - 1
-        assert isinstance(test_period.cur_candlestick, period.Candlestick)
-        assert test_period.cur_candlestick_start == self.start_time
+        assert isinstance(test_period.curr_candlestick, period.Candlestick)
+        assert test_period.curr_candlestick_start == self.start_time
         assert isinstance(test_period.candlesticks[0], type(np.array([])))

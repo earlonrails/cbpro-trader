@@ -17,13 +17,13 @@ class MetaPeriod(Period):
         newmsg = copy.deepcopy(msg)
         if msg.get('product_id') == self.base:
             newmsg['product_id'] = self.product
-            quoted_last = Decimal(msg.get('price')) / Decimal(self.cur_candlestick.close)
+            quoted_last = Decimal(msg.get('price')) / Decimal(self.curr_candlestick.close)
             total_price = quoted_last + Decimal(msg.get('price'))
             newmsg['size'] = Decimal(msg.get('size')) * (Decimal(msg.get('price')) / total_price)
             newmsg['price'] = Decimal(msg.get('price')) / quoted_last
         elif msg.get('product_id') == self.quoted:
             newmsg['product_id'] = self.product
-            base_last = Decimal(self.cur_candlestick.close) * Decimal(msg.get('price'))
+            base_last = Decimal(self.curr_candlestick.close) * Decimal(msg.get('price'))
             total_price = base_last + Decimal(msg.get('price'))
             newmsg['size'] = Decimal(msg.get('size')) * (Decimal(msg.get('price')) / total_price)
             newmsg['price'] = base_last / Decimal(msg.get('price'))

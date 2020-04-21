@@ -34,13 +34,13 @@ class cursesDisplay:
         if starty < self.signal_end_y + 1:
             starty = self.signal_end_y + 1
         for curr_period in period_list:
-            cur_stick = curr_period.cur_candlestick
-            if cur_stick.new is False:
+            curr_stick = curr_period.curr_candlestick
+            if curr_stick.new is False:
                 self.pad.addstr(starty, 0, "%s - %s O: %f H: %f L: %f C: %f V: %f" %
-                                (curr_period.name, cur_stick.time, cur_stick.open,
-                                 cur_stick.high, cur_stick.low, cur_stick.close,
-                                 cur_stick.volume),
-                                self.print_color(cur_stick.close, cur_stick.open))
+                                (curr_period.name, curr_stick.time, curr_stick.open,
+                                 curr_stick.high, curr_stick.low, curr_stick.close,
+                                 curr_stick.volume),
+                                self.print_color(curr_stick.close, curr_stick.open))
             starty += 1
         self.starty = starty
 

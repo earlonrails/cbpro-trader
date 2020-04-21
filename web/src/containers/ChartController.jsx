@@ -12,10 +12,10 @@ class ChartController extends Component {
             })
             .then(myJson => {
                 myJson.map((period_name, idx) => {
-                    (idx === 0) && this.props.changeActivePeriod(period_name);
-                    return this.props.addPeriod(period_name);
+                    (idx === 0) && this.props.changeActivePeriod(period_name)
+                    return this.props.addPeriod(period_name)
                 })
-                
+
             })
             .then(
                 setInterval(() => this.update(), 1000)
@@ -40,7 +40,7 @@ class ChartController extends Component {
                         .then(myJson => {
                             this.props.updateIndicators(myJson)
                         })
-                    break;
+                    break
                 case "flags":
                     fetch("/flags/")
                         .then(response => {
@@ -49,15 +49,15 @@ class ChartController extends Component {
                         .then(myJson => {
                             this.props.updateFlags(myJson)
                         })
-                    break;
+                    break
                 default:
-                    break;
+                    break
             }
         }
     }
 
     render() {
-        this.update();
+        this.update()
         return (
             <div id="chart-controller">
                 <ChartContainer />
@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
     active_period: state.chart.active_period,
     active_section: state.sidebar.active_section
   })
-  
+
 const mapDispatchToProps = dispatch => ({
     addPeriod: period_name => dispatch(addPeriod(period_name)),
     changeActivePeriod: period_name => dispatch(changeActivePeriod(period_name)),
@@ -80,4 +80,4 @@ const mapDispatchToProps = dispatch => ({
     updateFlags: flags => dispatch(updateFlags(flags))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartController);
+export default connect(mapStateToProps, mapDispatchToProps)(ChartController)

@@ -1,8 +1,8 @@
-import React from 'react';
-import { VictoryCandlestick, VictoryChart, VictoryAxis, VictoryLabel, VictoryTheme } from 'victory';
+import React from 'react'
+import { VictoryCandlestick, VictoryChart, VictoryAxis, VictoryLabel, VictoryTheme } from 'victory'
 
 function Chart (props) {
-    const { active_period, candlesticks } = props;
+    const { active_period, candlesticks } = props
     const victoryLabelStyle = {
       fontWeight: "bold",
       fontSize: 20,
@@ -26,6 +26,8 @@ function Chart (props) {
       }
       return `${t.toLocaleString(undefined, format).replace(',', '\n')}`
     }
+    const parseDate = (d) => Date.parse(d[0])
+    const candleData = candlesticks.slice(candlesticks.length-50, candlesticks.length)
 
     return (
         <div id="chart">
@@ -47,17 +49,18 @@ function Chart (props) {
                     style={tickAxisStyle}
                 />
                 <VictoryCandlestick
-                candleColors={candleColors}
-
-                data={candlesticks.slice(candlesticks.length-50, candlesticks.length)}
-                x={(d) => Date.parse(d[0])}
-                open={3}
-                close={4}
-                high={2}
-                low={1} />
+                    candleColors={candleColors}
+                    labels={() => "labels"}
+                    data={candleData}
+                    x={parseDate}
+                    open={3}
+                    close={4}
+                    high={2}
+                    low={1}
+                />
             </VictoryChart>
         </div>
     )
 }
 
-export default Chart;
+export default Chart

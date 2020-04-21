@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 import DetailsContainer from '../containers/DetailsContainer'
 import FlagsContainer from '../containers/FlagsContainer'
 
 function Sidebar(props) {
-    const { active_period, period_list, active_section, changeActiveSection, changeActivePeriod } = props;
+    const { active_period, period_list, active_section, changeActiveSection, changeActivePeriod } = props
     const periods = period_list.map(period_name => {
     const onClickChangePeriod = () => {changeActivePeriod(period_name)}
         return(
@@ -29,4 +29,4 @@ function Sidebar(props) {
     )
 }
 
-export default Sidebar;
+export default Sidebar

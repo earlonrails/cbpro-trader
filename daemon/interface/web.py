@@ -24,7 +24,7 @@ class web(object):
             else:
                 for period in self.indicator_subsys.period_list:
                     if period.name == periodName:
-                        period_data = period.candlesticks.tolist() + [period.cur_candlestick.to_list()]
+                        period_data = period.candlesticks.tolist() + [period.curr_candlestick.to_list()]
             return jsonify(period_data)
 
         @app.route('/indicators/')

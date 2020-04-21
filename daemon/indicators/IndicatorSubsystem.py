@@ -16,10 +16,10 @@ class IndicatorSubsystem:
         total_periods = len(curr_period.candlesticks)
         if total_periods > 0:
             closing_prices = curr_period.get_closing_prices()
-            closing_prices_close = np.append(closing_prices, curr_period.cur_candlestick.close)
-            self.highs = np.append(curr_period.get_highs(), curr_period.cur_candlestick.high)
-            self.lows = np.append(curr_period.get_lows(), curr_period.cur_candlestick.low)
-            volumes = np.append(curr_period.get_volumes(), curr_period.cur_candlestick.volume)
+            closing_prices_close = np.append(closing_prices, curr_period.curr_candlestick.close)
+            self.highs = np.append(curr_period.get_highs(), curr_period.curr_candlestick.high)
+            self.lows = np.append(curr_period.get_lows(), curr_period.curr_candlestick.low)
+            volumes = np.append(curr_period.get_volumes(), curr_period.curr_candlestick.volume)
 
             # self.calculate_bbands(curr_period.name, closing_prices_close)
             # self.calculate_macd(curr_period.name, closing_prices_close)
@@ -27,7 +27,7 @@ class IndicatorSubsystem:
             self.calculate_adx(curr_period.name, closing_prices_close)
             self.calculate_stoch(curr_period.name, closing_prices_close)
 
-            self.current_indicators[curr_period.name]['close'] = curr_period.cur_candlestick.close
+            self.current_indicators[curr_period.name]['close'] = curr_period.curr_candlestick.close
             self.current_indicators[curr_period.name]['total_periods'] = total_periods
 
     def calculate_adx(self, period_name, close):

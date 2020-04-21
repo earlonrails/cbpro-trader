@@ -29,16 +29,15 @@ class Period:
 
     def initialize(self):
         self.candlesticks = self.get_historical_data()
-        self.cur_candlestick = Candlestick(existing_candlestick=self.candlesticks[-1])
+        self.curr_candlestick = Candlestick(existing_candlestick=self.candlesticks[-1])
         self.candlesticks = self.candlesticks[:-1]
-        self.cur_candlestick_start = self.cur_candlestick.time
+        self.curr_candlestick_start = self.curr_candlestick.time
 
     def get_historical_data(self, num_periods=200):
         end = datetime.datetime.utcnow()
         end_iso = end.isoformat()
         start = end - datetime.timedelta(seconds=(self.period_size * num_periods))
         start_iso = start.isoformat()
-
         ret = None
 
         # Check if we got rate limited, which will return a JSON message
@@ -70,25 +69,25 @@ class Period:
         if isotime:
             if self.verbose_heartbeat:
                 self.logger.debug("[HEARTBEAT] " + str(isotime) + " " + str(msg.get('last_trade_id')))
-            if isotime - self.cur_candlestick_start > datetime.timedelta(seconds=self.period_size):
+            if isotime - self.curr_candlestick_start > datetime.timedelta(seconds=self.period_size):
                 self.close_candlestick()
-                self.new_candlestick(self.cur_candlestick.time + datetime.timedelta(seconds=self.period_size))
+                self.new_candlestick(self.curr_candlestick.time + datetime.timedelta(seconds=self.period_size))
 
     def process_trade(self, msg):
         if msg.get('product_id') == self.product:
-            cur_trade = trade.Trade(msg)
+            curr_trade = trade.Trade(msg)
             isotime = dateutil.parser.parse(msg.get('time')).replace(microsecond=0)
-            if isotime < self.cur_candlestick.time:
+            if isotime < self.curr_candlestick.time:
                 prev_stick = Candlestick(existing_candlestick=self.candlesticks[-1])
                 self.candlesticks = self.candlesticks[:-1]
-                prev_stick.add_trade(cur_trade)
+                prev_stick.add_trade(curr_trade)
                 self.add_stick(prev_stick)
             else:
-                if isotime > self.cur_candlestick.time + datetime.timedelta(seconds=self.period_size):
+                if isotime > self.curr_candlestick.time + datetime.timedelta(seconds=self.period_size):
                     self.close_candlestick()
-                    self.new_candlestick(self.cur_candlestick.time + datetime.timedelta(seconds=self.period_size))
-                self.cur_candlestick.add_trade(cur_trade)
-                self.cur_candlestick.print_stick(self.name)
+                    self.new_candlestick(self.curr_candlestick.time + datetime.timedelta(seconds=self.period_size))
+                self.curr_candlestick.add_trade(curr_trade)
+                self.curr_candlestick.print_stick(self.name)
 
     def get_highs(self):
         return np.array(self.candlesticks[:, 2], dtype='f8')
@@ -103,9 +102,9 @@ class Period:
         return np.array(self.candlesticks[:, 5], dtype='f8')
 
     def new_candlestick(self, isotime):
-        prev_close = self.cur_candlestick.close
-        self.cur_candlestick = Candlestick(isotime=isotime, prev_close=prev_close)
-        self.cur_candlestick_start = isotime.replace(second=0, microsecond=0)
+        prev_close = self.curr_candlestick.close
+        self.curr_candlestick = Candlestick(isotime=isotime, prev_close=prev_close)
+        self.curr_candlestick_start = isotime.replace(second=0, microsecond=0)
 
     def add_stick(self, stick_to_add):
         self.candlesticks = np.row_stack((self.candlesticks, stick_to_add.close_candlestick(self.name)))
@@ -115,7 +114,7 @@ class Period:
             self.time_of_first_candlestick_close = datetime.datetime.now()
         if len(self.candlesticks) > 0:
             self.candlesticks = np.row_stack((self.candlesticks,
-                                              self.cur_candlestick.close_candlestick(period_name=self.name,
+                                              self.curr_candlestick.close_candlestick(period_name=self.name,
                                                                                      prev_stick=self.candlesticks[-1])))
         else:
-            self.candlesticks = np.array([self.cur_candlestick.close_candlestick(self.name)])
+            self.candlesticks = np.array([self.curr_candlestick.close_candlestick(self.name)])

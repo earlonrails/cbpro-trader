@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 function Flags(props) {
-    const { flags } = props;
+    const { flags } = props
     const products = Object.keys(flags).map((flag) => {
         return(
             <div className="product" key={flag.toUpperCase() + flags[flag]}>
@@ -18,4 +18,4 @@ function Flags(props) {
     )
 }
 
-export default Flags;
+export default Flags

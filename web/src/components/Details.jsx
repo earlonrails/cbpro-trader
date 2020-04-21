@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 function Details(props) {
-    const { indicators } = props;
+    const { indicators } = props
     const tradeIndicators = Object.keys(indicators).map((indicator) => {
         return(
             <div className="indicator" key={indicators[indicator]}>
@@ -21,4 +21,4 @@ function Details(props) {
     )
 }
 
-export default Details;
+export default Details
